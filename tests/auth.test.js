@@ -1,5 +1,16 @@
 const request = require('supertest')
+const mongoose = require('mongoose')
 const app = require('../index')
+
+beforeAll(done => {
+  done()
+})
+
+afterAll(done => {
+  // Closing the DB connection allows Jest to exit successfully.
+  mongoose.connection.close()
+  done()
+})
 
 describe('Tests auth routes', () => {
    it('POST /api/auth/register -> creates new user', () => {
