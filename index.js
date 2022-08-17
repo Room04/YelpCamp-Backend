@@ -8,13 +8,15 @@ const app = express()
 
 
 // connect to database
-mongoose.connect(process.env.DB_URI, console.log('connected to DB'))
+mongoose.connect(process.env.DB_URI, () => {
+   console.log('connected to DB')
+})
 
 
 // add app middleware
 app.use(express.json())
 // add route middleware
-app.use('/api/v1/auth', authRoute)
+app.use('/api/auth', authRoute)
 
 
 // handle get route
