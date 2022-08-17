@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev-testt": "jest --watchAll",
+    "dev-test": "jest --watchAll",
     "dev-start": "nodemon index.js",
     "test": "jest"
   },
