@@ -8,7 +8,9 @@ const app = express()
 
 
 // connect to database
-mongoose.connect(process.env.DB_URI)
+mongoose.connect(process.env.DB_URI, () => {
+   console.log('Connected to DB')
+})
 
 
 // add app middleware
@@ -24,3 +26,5 @@ app.get('/', (req, res) => {
 
 // set app to listen on port
 app.listen(process.env.PORT || 5560)
+
+module.exports = app
