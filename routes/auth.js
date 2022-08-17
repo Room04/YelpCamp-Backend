@@ -4,6 +4,7 @@ const router = express()
 const User = require('../models/User')
 const {registerValidation} = require('./validations/authvalidation')
 
+// add new user
 router.post('/register', async (req, res) => {
 
    // check for errors
@@ -30,5 +31,8 @@ router.post('/register', async (req, res) => {
       res.status(404).json({statu: 1, message: error})
    }
 })
+
+
+// TODO: sign in a user
 
 module.exports = router
