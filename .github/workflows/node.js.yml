@@ -13,6 +13,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    env:
+      PORT: 5560
+      DB_URI: mongodb+srv://nommad:Tallrhino94@cluster0.wwoebgl.mongodb.net/yelpcamp?retryWrites=true&w=majority
 
     strategy:
       matrix:
