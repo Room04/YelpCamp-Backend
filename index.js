@@ -8,9 +8,7 @@ const app = express()
 
 
 // connect to database
-mongoose.connect(process.env.DB_URI, () => {
-   console.log('connected to DB')
-})
+mongoose.connect(process.env.DB_URI)
 
 
 // add app middleware
