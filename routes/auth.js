@@ -1,8 +1,10 @@
 const express = require('express')
 const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 const router = express()
 const User = require('../models/User')
-const {registerValidation} = require('./validations/authvalidation')
+const {registerValidation, loginValidation} = require('./validations/authvalidation')
+const auth = require('../middlewares/authmiddleware')
 
 // add new user
 router.post('/register', async (req, res) => {
@@ -28,8 +30,46 @@ router.post('/register', async (req, res) => {
 
       res.status(200).json({status: 0, user: savedUser})
    } catch (error) {
-      res.status(404).json({statu: 1, message: error})
+      res.status(400).json({status: 1, message: error})
    }
+})
+
+// log in user
+router.post('/login', async (req, res) => {
+
+   // validate user input
+   const { error } = registerValidation(req.body)
+   if(error) return res.status(400).json({ status: 1, error: error.details[0].message})
+
+   try {
+      // get user
+      const resUser = await User.findOne({ username: req.body.username })
+      // check if user exists
+      if(!resUser) return res.status(404).json({ status: 1, message: "User does not exist"})
+      
+      // check if passwords match
+      const pwd = resUser.password
+      if(!bcrypt.compareSync(req.body.password, pwd)) return res.status(403).json({ status: 1, message: "Invalid password" })
+
+      // create json-token
+      const token = jwt.sign({ _id: resUser._id }, process.env.TOKEN_SECRET)
+      // set the token to the headers
+      res.header('auth-token', token)
+
+      // return login succes message
+      res.status(200).json({ status: 0, token: token })
+   } catch (error) {
+      res.status(400).json({status: 1, error: error})
+   }
+
+})
+
+// logout user
+router.post('/logout', auth, (req, res) => {
+   delete req.header['auth-token']
+   
+   // return succesful logout message
+   res.status(200).json({ status: 0, message: "Logged out" })
 })
 
 
