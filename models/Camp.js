@@ -18,14 +18,8 @@ const campSchema = mongoose.Schema({
       required: true
    },
    created_by: {
-      id: {
-         type: String,
-         required: true
-      },
-      username: {
-         type:String,
-         required: true
-      }     
+      type: String,
+      required: true
    }
 })
 

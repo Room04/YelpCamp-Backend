@@ -7,6 +7,19 @@ const {newCampValidation} = require('./validations/campsvalidation')
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 
+// get all campgrounds
+router.get('/', async (req, res) => {
+   try {
+      const campgrounds = await Camp.find()
+      if(!campgrounds) return res.status(200).json({message: "No campgrounds yet"})
+
+      res.status(200).json(campgrounds)
+   } catch (error) {
+      res.status(404).json({error: error.message})
+   }
+})
+
+// create new campground
 router.post('/new', auth, user, upload.single('image'), async (req, res) => {
 
    // check for errors
@@ -20,7 +33,7 @@ router.post('/new', auth, user, upload.single('image'), async (req, res) => {
          price: req.body.price,
          image: `uploads/${req.file.filename}`,
          description: req.body.description,
-         created_by: req.user
+         created_by: req.username
       })
       res.status(200).json(newCamp)
    } catch(error) {

@@ -4,8 +4,7 @@ const User = require('../models/User')
 const userMiddleware = async (req, res, next) => {
    try{
       const user = await User.findOne({ _id: req.user })
-      req.user.username = user.username
-      req.user.id = user._id
+      req.username = user.username
       next()
    } catch(error) {
       res.status(404).json({ error: error.message })
