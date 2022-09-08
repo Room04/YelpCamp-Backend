@@ -11,11 +11,11 @@ router.post('/register', async (req, res) => {
 
    // check for errors
    const { error } = registerValidation(req.body)
-   if(error) return res.status(400).json({ status: 1, error: error.details[0].message})
+   if(error) return res.status(400).json({error: error.details[0].message})
 
    // check if the username already exists
    const username = await User.findOne({ username: req.body.username })
-   if(username) return res.status(400).json({ status: 1, error: "Username already in use" })
+   if(username) return res.status(400).json({ error: "Username already in use" })
 
    // hash password
    const salt = bcrypt.genSaltSync(10)
@@ -28,9 +28,9 @@ router.post('/register', async (req, res) => {
          password: hashedPwd
       })
 
-      res.status(200).json({status: 0, user: savedUser})
+      res.status(200).json(savedUser)
    } catch (error) {
-      res.status(400).json({status: 1, message: error})
+      res.status(400).json({error: error.message})
    }
 })
 
@@ -38,18 +38,18 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
 
    // validate user input
-   const { error } = registerValidation(req.body)
-   if(error) return res.status(400).json({ status: 1, error: error.details[0].message})
+   const { error } = loginValidation(req.body)
+   if(error) return res.status(400).json({error: error.details[0].message})
 
    try {
       // get user
       const resUser = await User.findOne({ username: req.body.username })
       // check if user exists
-      if(!resUser) return res.status(404).json({ status: 1, message: "User does not exist"})
+      if(!resUser) return res.status(404).json({message: "User does not exist"})
       
       // check if passwords match
       const pwd = resUser.password
-      if(!bcrypt.compareSync(req.body.password, pwd)) return res.status(403).json({ status: 1, message: "Invalid password" })
+      if(!bcrypt.compareSync(req.body.password, pwd)) return res.status(403).json({message: "Invalid password" })
 
       // create json-token
       const token = jwt.sign({ _id: resUser._id }, process.env.TOKEN_SECRET)
@@ -57,9 +57,9 @@ router.post('/login', async (req, res) => {
       res.header('auth-token', token)
 
       // return login succes message
-      res.status(200).json({ status: 0, token: token })
+      res.status(200).json({ token: token })
    } catch (error) {
-      res.status(400).json({status: 1, error: error})
+      res.status(400).json({error: error.message})
    }
 
 })
@@ -69,7 +69,7 @@ router.post('/logout', auth, (req, res) => {
    delete req.header['auth-token']
    
    // return succesful logout message
-   res.status(200).json({ status: 0, message: "Logged out" })
+   res.status(200).json({ message: "Logged out" })
 })
 
 
