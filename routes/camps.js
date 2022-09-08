@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
 })
 
 // get single campground
-router.get('/:id', async (req, res) => {
+router.get('/:id', auth, async (req, res) => {
    try {
       const campground = await Camp.findById(req.params.id)
       res.status(200).json(campground)
