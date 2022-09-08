@@ -19,6 +19,16 @@ router.get('/', async (req, res) => {
    }
 })
 
+// get single campground
+router.get('/:id', async (req, res) => {
+   try {
+      const campground = await Camp.findById(req.params.id)
+      res.status(200).json(campground)
+   } catch (error) {
+      res.status(404).json({error: "Campground not found"})
+   }
+})
+
 // create new campground
 router.post('/new', auth, user, upload.single('image'), async (req, res) => {
 
