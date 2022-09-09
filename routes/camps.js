@@ -16,7 +16,7 @@ router.get('/', async (req, res) => {
 
       res.status(200).json(campgrounds)
    } catch (error) {
-      res.status(404).json({error: error.message})
+      res.status(404).json({error: "An error occured. Try again later"})
    }
 })
 
@@ -39,7 +39,7 @@ router.get('/search', async (req, res) => {
 
       res.status(200).json(campgrounds)
    } catch (error) {
-      res.status(404).json({error: "An error occured", msg: error.message})
+      res.status(404).json({error: "An error occured. Try again later"})
    }
 })
 
@@ -62,9 +62,9 @@ router.post('/new', auth, user, upload.single('image'), async (req, res) => {
             username: req.username
          }
       })
-      res.status(200).json(newCamp)
+      res.status(200).json({message: "Campground created succesfully"})
    } catch(error) {
-      res.status(404).json({ error: error.message})
+      res.status(404).json({ error: "An error occured. Try again later"})
    }
 })
 
@@ -96,9 +96,9 @@ router.route('/:id')
       try {
          const newCamp = await Camp.findOneAndUpdate(filter, camp)
          const updatedCamp = await Camp.findById(req.params.id, {"created_by.id": 0, __v:0})
-         res.status(200).json(updatedCamp)
+         res.status(200).json({message: "Campground updated succesfully", campground: updatedCamp})
       } catch (error) {
-         res.status(404).json({ error: error.message })
+         res.status(404).json({ error: "An error occured. Try again later" })
       }
    }) 
 
