@@ -28,9 +28,9 @@ router.post('/register', async (req, res) => {
          password: hashedPwd
       })
 
-      res.status(200).json(savedUser)
+      res.status(200).json({message: "Account created succesfully"})
    } catch (error) {
-      res.status(400).json({error: error.message})
+      res.status(400).json({error: "An error occured. Try again later"})
    }
 })
 
@@ -45,11 +45,11 @@ router.post('/login', async (req, res) => {
       // get user
       const resUser = await User.findOne({ username: req.body.username })
       // check if user exists
-      if(!resUser) return res.status(404).json({message: "User does not exist"})
+      if(!resUser) return res.status(404).json({error: "User does not exist"})
       
       // check if passwords match
       const pwd = resUser.password
-      if(!bcrypt.compareSync(req.body.password, pwd)) return res.status(403).json({message: "Invalid password" })
+      if(!bcrypt.compareSync(req.body.password, pwd)) return res.status(403).json({error: "Invalid password" })
 
       // create json-token
       const token = jwt.sign({ _id: resUser._id }, process.env.TOKEN_SECRET)
@@ -59,7 +59,7 @@ router.post('/login', async (req, res) => {
       // return login succes message
       res.status(200).json({ token: token })
    } catch (error) {
-      res.status(400).json({error: error.message})
+      res.status(400).json({error: "An error occured. Try again later"})
    }
 
 })
