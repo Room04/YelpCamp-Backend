@@ -6,7 +6,7 @@ const newCampValidation = data => {
       image: Joi.object(),
       camp_details: Joi.object({
          name: Joi.string()
-         .required()
+            .required()
             .min(2),
          price: Joi.number()
             .required(),
@@ -18,4 +18,13 @@ const newCampValidation = data => {
    return schema.validate(data)
 }
 
+const searchValidation = data => {
+   const schema = Joi.object({
+      query: Joi.string().required()
+   })
+
+   return schema.validate(data)
+}
+
 module.exports.newCampValidation = newCampValidation
+module.exports.searchValidation = searchValidation

@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const User = require('./User')
 
 const campSchema = mongoose.Schema({
    campname: {
@@ -18,8 +19,20 @@ const campSchema = mongoose.Schema({
       required: true
    },
    created_by: {
-      type: String,
-      required: true
+      id: {
+         type: mongoose.Schema.ObjectId,
+         ref: User,
+         required: true,
+         index: true
+      },
+      username: {
+         type: String,
+         required: true
+      }
+   },
+   created_on: {
+      type: Date,
+      default: Date.now
    }
 })
 
