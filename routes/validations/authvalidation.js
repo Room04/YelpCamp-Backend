@@ -8,7 +8,9 @@ const registerValidation = data => {
          .min(3)
          .max(22),
       password: Joi.string()
-         .pattern(new RegExp('^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$'))
+         .required()
+         .pattern(RegExp(/^(?=.*[A-Z])(?=.*[\W])(?=.*[0-9])(?=.*[a-z]).{8,128}$/))
+         .message("Password must be atleast 8 characters, contain uppercase and lowercase letters and special characters."),
    })
 
    // return Joi.validate(data, schema)
