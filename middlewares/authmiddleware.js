@@ -4,7 +4,7 @@ const authMiddleware = (req, res, next) => {
 
    // check for token
    const token = req.header('auth-token')
-   if(!token) return res.status(401).json({ status: 1, error: "Access Denied"})
+   if(!token) return res.status(401).json({error: "Access Denied"})
 
    // verify auth token
    try {
@@ -12,7 +12,7 @@ const authMiddleware = (req, res, next) => {
       req.user = verified
       next()
    } catch (error) {
-      res.status(400).json({ status: 1, error: "Invalid token"})
+      res.status(400).json({ error: "Invalid token" })
    }
 }
 

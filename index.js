@@ -1,12 +1,12 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/auth')
+const campsRoute = require('./routes/camps')
 require('dotenv/config')
 
 // create app
 const app = express()
 
-// 
 // connect to database
 mongoose.connect(process.env.DB_URI, () => {
    console.log('Connected to DB')
@@ -17,6 +17,7 @@ mongoose.connect(process.env.DB_URI, () => {
 app.use(express.json())
 // add route middleware
 app.use('/api/auth', authRoute)
+app.use('/api/camps', campsRoute)
 
 
 // handle get route
