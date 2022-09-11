@@ -3,7 +3,8 @@ const Joi = require('@hapi/joi')
 // validate data when creating new campground
 const newCampValidation = data => {
    const schema = Joi.object({
-      image: Joi.object(),
+      image: Joi.object()
+         .required(),
       camp_details: Joi.object({
          name: Joi.string()
             .required()
