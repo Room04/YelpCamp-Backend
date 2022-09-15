@@ -8,7 +8,7 @@ const user = require('../middlewares/usermiddleware')
 router.get('/:camp_id', auth, async (req, res) => {
    // Get all comments for a campground
    try {
-      const comments = Comment.find({}, {_id: 0, "created_by.id": 0})
+      const comments = Comment.find({"campground.id": req.params.camp_id}, {_id: 0, "created_by.id": 0})
       res.status(200).json(comments)
    } catch (error) {
       res.status(404).json({error: "An error occured.Try again later"})
