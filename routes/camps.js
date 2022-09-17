@@ -11,7 +11,7 @@ const upload = multer({ dest: 'uploads/' })
 // get all campgrounds
 router.get('/', async (req, res) => {
    try {
-      const campgrounds = await Camp.find({}, {"created_by.id": 0, __v:0})
+      const campgrounds = await Camp.find({}, {"created_by.id": 0, comments: 0, __v:0})
       if(!campgrounds) return res.status(200).json({message: "No campgrounds yet"})
 
       res.status(200).json(campgrounds)
@@ -34,7 +34,7 @@ router.get('/search', async (req, res) => {
                { campname: { $regex: req.body.query, $options: 'i' } }, 
                { description: { $regex: req.body.query, $options: 'i' } }
             ] 
-         }, {"created_by.id": 0, __v:0}
+         }, {"created_by.id": 0, "comments._id": 0, __v:0}
       )
 
       res.status(200).json(campgrounds)
@@ -72,7 +72,7 @@ router.route('/:id')
    // get single campground
    .get(auth, async (req, res) => {
       try {
-         const campground = await Camp.findById(req.params.id, {"created_by.id": 0, __v:0})
+         const campground = await Camp.findById(req.params.id, {"created_by.id": 0, __v:0, "comments._id": 0})
          res.status(200).json(campground)
       } catch (error) {
          res.status(404).json({error: "Campground not found"})
