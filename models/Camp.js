@@ -1,6 +1,20 @@
 const mongoose = require('mongoose')
 const User = require('./User')
 
+const commentSchema = mongoose.Schema({
+   comment: {
+      type: String,
+      required: true
+   },
+   created_by: {
+      type: String,
+      required: true
+   },
+   created_on: {
+      type: Date,
+      required: true
+   }
+})
 const campSchema = mongoose.Schema({
    campname: {
       type: String,
@@ -29,6 +43,10 @@ const campSchema = mongoose.Schema({
          type: String,
          required: true
       }
+   },
+   comments: {
+      type: [commentSchema],
+      required: false
    },
    created_on: {
       type: Date,

@@ -2,6 +2,7 @@ const express = require('express')
 const mongoose = require('mongoose')
 const authRoute = require('./routes/auth')
 const campsRoute = require('./routes/camps')
+const commentsRoute = require('./routes/comments')
 require('dotenv/config')
 
 // create app
@@ -18,6 +19,7 @@ app.use(express.json())
 // add route middleware
 app.use('/api/auth', authRoute)
 app.use('/api/camps', campsRoute)
+app.use('/api/comments', commentsRoute)
 
 
 // handle get route
